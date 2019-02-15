@@ -517,6 +517,8 @@ class ErrorHandler
                 $errorAsException ? ['exception' => $errorAsException] : [],
             ];
         } else {
+            $error_handler = set_error_handler('var_dump');
+            restore_error_handler();
             try {
                 $this->isRecursive = true;
                 $level = ($type & $level) ? $this->loggers[$type][1] : LogLevel::DEBUG;
@@ -525,7 +527,7 @@ class ErrorHandler
                 $this->isRecursive = false;
 
                 if (!\defined('HHVM_VERSION')) {
-                    set_error_handler([$this, __FUNCTION__]);
+                    set_error_handler($error_handler;
                 }
             }
         }
